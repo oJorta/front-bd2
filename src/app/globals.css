@@ -11,11 +11,29 @@
   }
 }
 
+body {
+  color: #000;
+  font-size: 1rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
 .p-inputnumber-input {
   padding: 0 .5rem;
   width: 72px;
 }
 
-.p-datatable {
-  width: 95%;
+.p-datatable-wrapper {
+  border-radius: 4px 4px 0 0;
+}
+
+.p-paginator {
+  border-radius: 0 0 4px 4px;
+}
+
+
+@media (max-width: 900px) {
+  .p-datatable {
+    width: 95%;
+  }
 }

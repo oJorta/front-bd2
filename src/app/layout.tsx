@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "primereact/resources/themes/lara-light-purple/theme.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className.toString()} w-screen bg-blue-200`}>{children}</body>
+      <body className={`${inter.className.toString()} w-screen bg-zinc-300`}>{children}</body>
     </html>
   );
 }
