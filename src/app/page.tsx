@@ -28,11 +28,6 @@ export default function Home() {
       
     };
     getTableNames();
-    /* setTables([
-      ...tables,
-      { name: "VIEW v_aluno_disciplina", code: "v_aluno_disciplina" },
-      { name: "PROC ExibirMediasDisciplina", code: "ExibirMediasDisciplina" },
-    ]) */
   }, []);
 
   const getTableData = async () => {
@@ -88,7 +83,7 @@ export default function Home() {
           </div>
 
           <DataTable
-            value={tableData}
+            value={tableData || []}
             tableStyle={{ minWidth: "50rem" }}
             size="normal"
             stripedRows
