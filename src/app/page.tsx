@@ -15,11 +15,16 @@ export default function Home() {
   const [selectedTable, setSelectedTable] = useState(null) as any;
   const [tables, setTables] = useState([
     { name: "VIEW v_aluno_disciplina", code: "v_aluno_disciplina" },
+    { name: "VIEW view_disciplinas_professor", code: "view_disciplinas_professor" },
     { name: "PROC ExibirMediasDisciplina", code: "ExibirMediasDisciplina" },
+    { name: "PROC RendaMediaPorCurso", code: "RendaMediaPorCurso" },
+    { name: "PROC update_salario_departamento", code: "update_salario_departamento" },
   ]) as any;
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [value1, setValue1] = useState(0) as any;
+  const [value2, setValue2] = useState(0) as any;
+  const [value3, setValue3] = useState(0) as any;
 
   useEffect(() => {
     const getTableNames = async () => {
@@ -34,7 +39,12 @@ export default function Home() {
 
   const getTableData = async () => {
     setLoading(true);
-    let url = getEndpoint(selectedTable?.code, selectedTable?.code == "ExibirMediasDisciplina" ? `${value1}` : null);
+    let params = procedures.includes(selectedTable?.code) ? (
+      selectedTable?.code === "update_salario_departamento"
+        ? `${value1},${value2},${value3}`
+        : `${value1}`
+    ) : null;
+    let url = getEndpoint(selectedTable?.code, params);
 
     if (!url) {
       alert("Tabela não encontrada");
@@ -43,10 +53,8 @@ export default function Home() {
     }
     await fetch(url).then(async (response) => {
       await response.json().then((data) => {
-        console.log(data);
         procedures.includes(selectedTable?.code) ? setTableData(data[0]) : setTableData(data)
         setLoading(false)
-        console.log(tableData);
       })
     });
   };
@@ -71,14 +79,55 @@ export default function Home() {
               className="w-full max-w-md md:w-14rem"
             />
 
-            {selectedTable?.code == "ExibirMediasDisciplina" && (
-              <InputNumber
-                inputId="integeronly"
-                value={value1}
-                className="w-1/5"
-                onValueChange={(e) => setValue1(e.value)}
-              />
-            )}
+            {procedures.includes(selectedTable?.code) &&
+              (selectedTable?.code === "update_salario_departamento" ? (
+                <>
+                  <div className="flex flex-col">
+                    <label htmlFor="dept" className="text-sm font-semibold">Depart.</label>
+                    <InputNumber
+                      value={value1}
+                      className="w-1/5"
+                      onValueChange={(e) => setValue1(e.value)}
+                      id="dept"
+                      useGrouping={false}
+                      placeholder="ID"
+                    />
+
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="sal-mestre" className="text-sm font-semibold">Mestre</label>
+                    <InputNumber
+                      minFractionDigits={1}
+                      value={value2}
+                      className="w-1/5"
+                      onValueChange={(e) => setValue2(e.value)}
+                      id="sal-mestre"
+                      placeholder="Salário"
+                      />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="sal-doutor" className="text-sm font-semibold">Doutorado</label>
+                    <InputNumber
+                      minFractionDigits={1}
+                      value={value3}
+                      className="w-1/5"
+                      onValueChange={(e) => setValue3(e.value)}
+                      id="sal-doutor"
+                      placeholder="Salário"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <InputNumber
+                    value={value1}
+                    className="w-1/5"
+                    onValueChange={(e) => setValue1(e.value)}
+                    useGrouping={false}
+                    placeholder="ID"
+                  />
+                </>
+              ))}
 
             <Button
               label="Atualizar"

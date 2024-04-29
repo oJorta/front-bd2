@@ -11,7 +11,10 @@ export const tables = [
 
 export const views = [
     "v_aluno_disciplina",
+    "view_disciplinas_professor"
 ];
 export const procedures = [
     "ExibirMediasDisciplina",
+    "RendaMediaPorCurso",
+    "update_salario_departamento"
 ];
