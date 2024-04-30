@@ -67,5 +67,25 @@ BEGIN
     SET p.salario = table_doutor.novo_salario;
 END //
 DELIMITER ;`
+
+        case "analisar_horas_professores":
+            return `
+DELIMITER //
+CREATE PROCEDURE analisar_horas_professores()
+BEGIN
+    SELECT 
+        p.cod_prof,
+        p.nome_prof,
+        SUM(v.horas_semana) AS total_horas_semana,
+        p.horas_alocadas,
+        CASE 
+            WHEN SUM(v.horas_semana) > p.horas_alocadas THEN 'Ultrapassou'
+            ELSE 'Não ultrapassou'
+        END AS status
+    FROM professor p
+    JOIN view_disciplinas_professor v ON p.cod_prof = v.cod_prof
+    GROUP BY p.cod_prof;
+END//
+DELIMITER ;`
     }
 }

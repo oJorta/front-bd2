@@ -16,5 +16,6 @@ export const views = [
 export const procedures = [
     "ExibirMediasDisciplina",
     "RendaMediaPorCurso",
-    "update_salario_departamento"
+    "update_salario_departamento",
+    "analisar_horas_professores"
 ];

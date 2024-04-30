@@ -19,6 +19,7 @@ export default function Home() {
     { name: "PROC ExibirMediasDisciplina", code: "ExibirMediasDisciplina" },
     { name: "PROC RendaMediaPorCurso", code: "RendaMediaPorCurso" },
     { name: "PROC update_salario_departamento", code: "update_salario_departamento" },
+    { name: "PROC analisar_horas_professores", code: "analisar_horas_professores" },
   ]) as any;
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,7 @@ export default function Home() {
 
   useEffect(() => {
     const getTableNames = async () => {
-      const response = await fetch("https://api-bd2.vercel.app/tabelas");
+      const response = await fetch("http://localhost:3001/tabelas");
       const data = await response.json();
       const tableNames = data.map((table: any) => ({ name: table, code: table}));
       setTables(tables.concat(tableNames));
@@ -42,7 +43,7 @@ export default function Home() {
     let params = procedures.includes(selectedTable?.code) ? (
       selectedTable?.code === "update_salario_departamento"
         ? `${value1},${value2},${value3}`
-        : `${value1}`
+        : selectedTable?.code !== "analisar_horas_professores" && value1
     ) : null;
     let url = getEndpoint(selectedTable?.code, params);
 
@@ -118,16 +119,18 @@ export default function Home() {
                   </div>
                 </>
               ) : (
-                <>
-                  <InputNumber
-                    value={value1}
-                    className="w-1/5"
-                    onValueChange={(e) => setValue1(e.value)}
-                    useGrouping={false}
-                    placeholder="ID"
-                  />
-                </>
-              ))}
+                selectedTable?.code === "analisar_horas_professores" ? (
+                  <>
+                  </>
+                ) : (
+                    <InputNumber
+                      value={value1}
+                      className="w-1/5"
+                      onValueChange={(e) => setValue1(e.value)}
+                      useGrouping={false}
+                      placeholder="ID"
+                    />
+                )))}
 
             <Button
               label="Atualizar"
